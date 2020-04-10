@@ -14,7 +14,10 @@
 //callback function is to pass a function into other function as argument withour parentheis operator
 
 // anonymous function is simply function that doesnt have name can;t be reuse
-var score, roundscore, activePlayer;
+
+// state variable tells condition of system which is definition
+var score, roundscore, activePlayer, gamePlaying;
+ 
 
  
  init();
@@ -29,6 +32,8 @@ var score, roundscore, activePlayer;
 
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
+    if(gamePlaying){
+    
     //1. random number
     var dice =Math.floor(Math.random()*6) + 1;
     //2.display result
@@ -46,17 +51,18 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
         //nextplayer
       nextPlayer();
     }
+
+    }
+    
 });
 
 document.querySelector('.btn-hold').addEventListener('click',function()
 {
-  //1.add current score to  player globale score
+  if(gamePlaying){
+     //1.add current score to  player globale score
   score[activePlayer]+=roundscore;
   
   //aother way to writes it is score[activePlayer]=score[activePlayer]+roundscore; 
-
-
- 
   //2.update UI
   document.querySelector('#score-'+activePlayer).textContent= score[activePlayer];
 
@@ -66,15 +72,17 @@ document.querySelector('.btn-hold').addEventListener('click',function()
      document.querySelector('.dice').style.display='none';
      document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
      document.querySelector('.player-'+activePlayer+'-panel').classList.remove('active');
-    console.log('player '+activePlayer +'wins the game');
+     console.log('player '+activePlayer +'wins the game');
+    
+     gamePlaying=false;
   } else{
     nextPlayer();
 
   }
+}
 
   
-
-});
+} );
 
 function nextPlayer(){
        activePlayer ===0? activePlayer=1: activePlayer=0;
@@ -96,6 +104,7 @@ function init(){
 score=[0,0];
 activePlayer=0;
 roundscore=0;
+gamePlaying=true;
 
 document.querySelector('.dice').style.display='none';
 
@@ -119,4 +128,4 @@ document.querySelector('.player-1-panel').classList.remove('active');
 document.querySelector('.player-0-panel').classList.add('active');
 
 
-}
+} 
